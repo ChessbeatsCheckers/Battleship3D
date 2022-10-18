@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,8 +13,9 @@ public class createboard : MonoBehaviour
     public GameObject boardpiece;
     private GameObject[,] p1board = new GameObject[10,10];
     private GameObject[,] p2board = new GameObject[10, 10];    // Start is called before the first frame update
-    bool verticle = false;
-    int shipselected = 5; 
+    public Button orientation;
+    bool verticle = true;
+    int shipspace = 5; 
     
     void Start()
     {
@@ -25,6 +27,7 @@ public class createboard : MonoBehaviour
       // p1board[row, col].transform.position = new Vector3(col, boardpiece.transform.position.y, row);
        
        createboards(boardpiece);
+        
     }
 
     // Update is called once per frame
@@ -48,7 +51,7 @@ public class createboard : MonoBehaviour
         }
     
     }
-
+    
 
     void GetGameObjectandmakeotherswhite(string rowcol,Transform obj)
     {
@@ -62,17 +65,64 @@ public class createboard : MonoBehaviour
             {
                 if (p1board[row, col].transform != obj)
                 {
-                    p1board[row, col].transform.GetComponent<Renderer>().material = white;
-                }
+                   
 
+
+                }
+                else
+                {
+                    cleanboard();
+                    p1board[row, col].transform.GetComponent<Renderer>().material = blue;
+                    preshowship(row, col);
+                }
             }
 
 
         }
+
+        
+
+
+
     }
 
+    void preshowship(int row, int col)
+    {
+        if (verticle)
+        {
+            if (row + shipspace <= 10)
+            {
+                for (int count = row; count < (row + shipspace); count++)
+                {
+                    p1board[count, col].transform.GetChild(1).GetComponent<MeshRenderer>().enabled = true; 
+                }
+            }
+            
+        }
+        else
+        {
+            
+        
+        }
 
 
+    }
+
+    void cleanboard()
+    {
+        for (int col = 0; col < 10; col++)
+        {
+
+            for (int row = 0; row < 10; row++)
+            {
+                p1board[row, col].transform.GetComponent<Renderer>().material = white;
+                p1board[row, col].transform.GetChild(1).GetComponent<MeshRenderer>().enabled = false;
+            }
+
+
+        }
+
+    }
 
     // up is z right is x
       void createboards(GameObject boardpiece)
@@ -127,7 +177,10 @@ public class createboard : MonoBehaviour
 
 
     }
-        
+      
+    
+
+
  }
 
 
