@@ -3,12 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class createboard : MonoBehaviour
 {
+    public Material white;
+    public Material blue; 
     public GameObject boardpiece;
     private GameObject[,] p1board = new GameObject[10,10];
     private GameObject[,] p2board = new GameObject[10, 10];    // Start is called before the first frame update
+    bool verticle = false;
+    int shipselected = 5; 
+    
     void Start()
     {
         //int row = 1; 
@@ -24,8 +30,48 @@ public class createboard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+        preshow();
     }
+
+
+    void preshow()
+    {
+       // int mask = 1 << LayerMask.NameToLayer("ignore");
+        RaycastHit hitinfo = new RaycastHit();
+        bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo);
+        if (hit)
+        {
+            hitinfo.transform.GetComponent<Renderer>().material = blue;
+            Debug.Log(hitinfo.transform.name);
+            GetGameObjectandmakeotherswhite(hitinfo.transform.name, hitinfo.transform);
+        }
+    
+    }
+
+
+    void GetGameObjectandmakeotherswhite(string rowcol,Transform obj)
+    {
+       int rowe = rowcol[0] - '0';
+       int cole = rowcol[2] - '0';
+
+        for (int col = 0; col < 10; col++)
+        {
+            
+            for (int row = 0; row < 10; row++)
+            {
+                if (p1board[row, col].transform != obj)
+                {
+                    p1board[row, col].transform.GetComponent<Renderer>().material = white;
+                }
+
+            }
+
+
+        }
+    }
+
+
 
 
     // up is z right is x
@@ -41,11 +87,11 @@ public class createboard : MonoBehaviour
 
 
                 
-                Debug.Log("test");
+               // Debug.Log("test");
                 p1board[row,col] = GameObject.Instantiate(boardpiece);
                 p1board[row, col].transform.position = new Vector3(col, boardpiece.transform.position.y, row);
                 string name = "B1[" + col + ":" + row + "]";
-                p1board[row, col].transform.name = "BoardPiece" ;
+                p1board[row, col].transform.name = col+"/"+row ;
                 p1board[row, col].transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = name;
             }
 
