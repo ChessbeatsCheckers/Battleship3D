@@ -55,7 +55,7 @@ public class createboard : MonoBehaviour
         RaycastHit hitinfo = new RaycastHit();
         bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo);
         if (hit)
-        {
+        {   
             hitinfo.transform.GetComponent<Renderer>().material = blue;
             Debug.Log(hitinfo.transform.name);
             GetGameObjectandmakeotherswhite(hitinfo.transform.name, hitinfo.transform);
@@ -85,9 +85,16 @@ public class createboard : MonoBehaviour
                     cleanboard();
                     p1board[row, col].transform.GetComponent<Renderer>().material = blue;
 
-                    if(shipspace!=-1)
-                    preshowship(row, col);
+                    if (shipspace != -1)
+                    {
+                        preshowship(row, col);
+                        if (Input.GetMouseButtonUp(0))
+                        {
+                            placeship(p1board[row, col]);
+                        }
 
+
+                    }
                 }
             }
 
@@ -202,10 +209,15 @@ public class createboard : MonoBehaviour
     {
         Debug.Log("orientation change");
         if (verticle == true)
+        {
+            rotatenonplacedships(90);
             verticle = false;
+        }
         else
+        {
+            rotatenonplacedships(-90);
             verticle = true;
-    
+        }
     }
 
     public void set5spacebattleship()
@@ -232,6 +244,139 @@ public class createboard : MonoBehaviour
     {
         shipselected = 1;
         shipspace = 2;
+    }
+    // 1 smallest 5 biggest
+    void placeship(GameObject spot)
+    {
+        if (shipselected == 1)
+        {
+            but2spacebattleship.GetComponent<Button>().enabled = false;
+            but2spacebattleship.GetComponent<Image>().enabled = false;
+            but2spacebattleship.transform.GetChild(0).GetComponent<TextMeshProUGUI>().enabled = false;
+
+            if (verticle)
+            {
+
+                f2spacer.transform.position = new Vector3(spot.transform.position.x - .11f, spot.transform.position.y + .495f, spot.transform.position.z + .221f);
+
+            }
+            else
+            {
+                f2spacer.transform.position = new Vector3(spot.transform.position.x + .224f, spot.transform.position.y + .495f, spot.transform.position.z );
+            }
+            
+            
+        }
+
+        if (shipselected == 2)
+        {
+            but3spacebattleship2.GetComponent<Button>().enabled = false;
+            but3spacebattleship2.GetComponent<Image>().enabled = false;
+            but3spacebattleship2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().enabled = false;
+
+            if (verticle)
+            {
+
+                f3spacer2.transform.position = new Vector3(spot.transform.position.x - .058f, spot.transform.position.y + .754f, spot.transform.position.z + 1.009f);
+
+            }
+            else
+            {
+                f3spacer2.transform.position = new Vector3(spot.transform.position.x + .945f, spot.transform.position.y + .70f, spot.transform.position.z - 0.109f);
+            }
+
+
+        }
+
+        if (shipselected == 3)
+        {
+            but3spacebattleship.GetComponent<Button>().enabled = false;
+            but3spacebattleship.GetComponent<Image>().enabled = false;
+            but3spacebattleship.transform.GetChild(0).GetComponent<TextMeshProUGUI>().enabled = false;
+
+            if (verticle)
+            {
+
+                f3spacer1.transform.position = new Vector3(spot.transform.position.x - .058f, spot.transform.position.y + .754f, spot.transform.position.z + 1.009f);
+
+            }
+            else
+            {
+                f3spacer1.transform.position = new Vector3(spot.transform.position.x + .97f, spot.transform.position.y + .609f, spot.transform.position.z );
+            }
+
+
+        }
+        if (shipselected == 4)
+        {
+            but4spacebattleship.GetComponent<Button>().enabled = false;
+            but4spacebattleship.GetComponent<Image>().enabled = false;
+            but4spacebattleship.transform.GetChild(0).GetComponent<TextMeshProUGUI>().enabled = false;
+
+            if (verticle)
+            {
+
+                f4spacer.transform.position = new Vector3(spot.transform.position.x, spot.transform.position.y + .176f, spot.transform.position.z + 1.404f);
+
+            }
+            else
+            {
+                f4spacer.transform.position = new Vector3(spot.transform.position.x + 1.334f, spot.transform.position.y + .363f, spot.transform.position.z );
+            }
+
+
+        }
+        if (shipselected == 5)
+        {
+            but5spacebattleship.GetComponent<Button>().enabled = false;
+            but5spacebattleship.GetComponent<Image>().enabled = false;
+            but5spacebattleship.transform.GetChild(0).GetComponent<TextMeshProUGUI>().enabled = false;
+
+            if (verticle)
+            {
+
+                f5spacer.transform.position = new Vector3(spot.transform.position.x, spot.transform.position.y + 0.383f, spot.transform.position.z + 1.747f);
+
+            }
+            else
+            {
+                f5spacer.transform.position = new Vector3(spot.transform.position.x + 1.507f, spot.transform.position.y + 0.283f, spot.transform.position.z ); ;
+            }
+
+
+        }
+
+
+
+
+
+
+        //shipselected = -1;
+       // shipspace = -1;
+    }
+
+    void rotatenonplacedships(int amount)
+    {
+        if (but5spacebattleship.GetComponent<Button>().enabled == true)
+        {
+            f5spacer.transform.Rotate(0, amount, 0);
+        }
+        if (but4spacebattleship.GetComponent<Button>().enabled == true)
+        {
+            f4spacer.transform.Rotate(0, amount, 0);
+        }
+        if (but3spacebattleship.GetComponent<Button>().enabled == true)
+        {
+            f3spacer1.transform.Rotate(0, amount, 0);
+        }
+        if (but3spacebattleship2.GetComponent<Button>().enabled == true)
+        {
+            f3spacer2.transform.Rotate(0, amount, 0);
+        }
+        if (but2spacebattleship.GetComponent<Button>().enabled == true)
+        {
+            f2spacer.transform.Rotate(0, amount, 0);
+        }
     }
 
 }
