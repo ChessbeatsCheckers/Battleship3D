@@ -18,7 +18,7 @@ public class createboard : MonoBehaviour
     private GameObject[,] p1board = new GameObject[10,10];
     private GameObject[,] p2board = new GameObject[10, 10];    // Start is called before the first frame update
     private int[,] AiShipsplaced = new int[10, 10];
-    public GameObject butorientation, but5spacebattleship, but4spacebattleship, but3spacebattleship, but3spacebattleship2, but2spacebattleship;
+    public GameObject butorientation, but5spacebattleship, but4spacebattleship, but3spacebattleship, but3spacebattleship2, but2spacebattleship, butexit;
     public GameObject f5spacer, f4spacer, f3spacer1, f3spacer2, f2spacer; 
     bool verticle = true;
     int shipspace = -1;
@@ -38,7 +38,7 @@ public class createboard : MonoBehaviour
         but3spacebattleship.GetComponent<Button>().onClick.AddListener(set3spacebattleship);
         but3spacebattleship2.GetComponent<Button>().onClick.AddListener(set3spacesub);
         but2spacebattleship.GetComponent<Button>().onClick.AddListener(set2spacebattleship);
-
+        butexit.GetComponent<Button>().onClick.AddListener(exit);
 
 
         createboards(boardpiece);
@@ -52,7 +52,10 @@ public class createboard : MonoBehaviour
         preshow();
     }
 
-
+    void exit()
+    { 
+     Application.Quit();
+    }
     void preshow()
     {
        // int mask = 1 << LayerMask.NameToLayer("ignore");
