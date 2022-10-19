@@ -6,9 +6,12 @@ using UnityEngine;
 using UnityEngine.UI;
 //using UnityEngine.UIElements;
 using TMPro;
+using Unity.Android.Types;
+
 public class createboard : MonoBehaviour
 {
     public Material Yellow; 
+    public Material green; 
     public Material white;
     public Material blue; 
     public GameObject boardpiece;
@@ -56,7 +59,9 @@ public class createboard : MonoBehaviour
         bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo);
         if (hit)
         {   
+            if(hitinfo.transform.GetComponent<Renderer>().material.color != Color.green)
             hitinfo.transform.GetComponent<Renderer>().material = blue;
+
             Debug.Log(hitinfo.transform.name);
             GetGameObjectandmakeotherswhite(hitinfo.transform.name, hitinfo.transform);
         }
@@ -83,14 +88,19 @@ public class createboard : MonoBehaviour
                 else
                 {
                     cleanboard();
-                    p1board[row, col].transform.GetComponent<Renderer>().material = blue;
+                    if (p1board[row, col].transform.GetComponent<Renderer>().material.color != Color.green)
+                        p1board[row, col].transform.GetComponent<Renderer>().material = blue;
 
                     if (shipspace != -1)
                     {
                         preshowship(row, col);
                         if (Input.GetMouseButtonUp(0))
                         {
-                            placeship(p1board[row, col]);
+                            if (iscollision(row, col) == false)
+                            {
+                                writeonboard(row, col);
+                                placeship(p1board[row, col]);
+                            }
                         }
 
 
@@ -107,6 +117,49 @@ public class createboard : MonoBehaviour
 
     }
 
+    bool iscollision(int row, int col)
+    {
+        bool collision = false; 
+        if (verticle)
+        {
+            if (row + shipspace <= 10)
+            {
+                for (int count = row; count < (row + shipspace); count++)
+                {
+                    if (p1board[count, col].transform.GetComponent<Renderer>().material.color == Color.green)
+                    {
+                        //p1board[count, col].transform.GetChild(1).GetComponent<Renderer>().material = Yellow;
+                        collision = true;
+                    }
+                }
+            }
+            else
+            collision = true;
+
+            return collision;
+        }
+        else
+        {
+            if (col + shipspace <= 10)
+            {
+                for (int count = col; count < (col + shipspace); count++)
+                {
+                    if (p1board[row, count].transform.GetComponent<Renderer>().material.color == Color.green)
+                    {
+                        //p1board[count, col].transform.GetChild(1).GetComponent<Renderer>().material = Yellow;
+                        collision = true;
+                    }
+                }
+            }
+            else
+            collision = true;
+
+            return collision;
+        }
+        
+
+    }
+
     void preshowship(int row, int col)
     {
         if (verticle)
@@ -115,7 +168,14 @@ public class createboard : MonoBehaviour
             {
                 for (int count = row; count < (row + shipspace); count++)
                 {
-                    p1board[count, col].transform.GetChild(1).GetComponent<MeshRenderer>().enabled = true; 
+                    p1board[count, col].transform.GetChild(1).GetComponent<MeshRenderer>().enabled = true;
+
+                    if (p1board[count, col].transform.GetComponent<Renderer>().material.color == Color.green)
+                    {
+                        p1board[count, col].transform.GetChild(1).GetComponent<Renderer>().material = Yellow;
+                        
+                    }
+
                 }
             }
             
@@ -127,6 +187,41 @@ public class createboard : MonoBehaviour
                 for (int count = col; count < (col + shipspace); count++)
                 {
                     p1board[row, count].transform.GetChild(1).GetComponent<MeshRenderer>().enabled = true;
+
+                    if (p1board[row, count].transform.GetComponent<Renderer>().material.color == Color.green)
+                    {
+                        p1board[row, count].transform.GetChild(1).GetComponent<Renderer>().material = Yellow;
+
+                    }
+
+                }
+            }
+
+        }
+
+
+    }
+
+    void writeonboard(int row, int col)
+    {
+        if (verticle)
+        {
+            if (row + shipspace <= 10)
+            {
+                for (int count = row; count < (row + shipspace); count++)
+                {
+                    p1board[count, col].transform.GetComponent<Renderer>().material.color = Color.green;
+                }
+            }
+
+        }
+        else
+        {
+            if (col + shipspace <= 10)
+            {
+                for (int count = col; count < (col + shipspace); count++)
+                {
+                    p1board[row, count].transform.GetComponent<Renderer>().material.color = Color.green;
                 }
             }
 
@@ -142,7 +237,11 @@ public class createboard : MonoBehaviour
 
             for (int row = 0; row < 10; row++)
             {
-                p1board[row, col].transform.GetComponent<Renderer>().material = white;
+                if (p1board[row, col].transform.GetComponent<Renderer>().material.color != Color.green)
+                {
+                    p1board[row, col].transform.GetComponent<Renderer>().material = white;
+                    
+                }
                 p1board[row, col].transform.GetChild(1).GetComponent<MeshRenderer>().enabled = false;
             }
 
@@ -176,8 +275,29 @@ public class createboard : MonoBehaviour
 
 
 
-        boardpiece.transform.position = new Vector3(1000, 1000, 1000);
+        boardpiece.transform.position = new Vector3(13, 0, 0);
+
+        for (int col2 = 0; col2 < 10; col2++)
+        {
+            for (int row2 = 0; row2 < 10; row2++)
+            {
+
+
+
+                // Debug.Log("test");
+                p2board[row2, col2] = GameObject.Instantiate(boardpiece);
+                p2board[row2, col2].transform.position = new Vector3(col2, boardpiece.transform.position.y, row2);
+                string name = "B2[" + col2 + ":" + row2 + "]";
+                p2board[row2, col2].transform.name = col2 + "A/" + row2;
+                p2board[row2, col2].transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = name;
+            }
+
         }
+
+
+
+
+         }
 
     char decideletter(int col)
     {
@@ -351,8 +471,8 @@ public class createboard : MonoBehaviour
 
 
 
-        //shipselected = -1;
-       // shipspace = -1;
+        shipselected = -1;
+       shipspace = -1;
     }
 
     void rotatenonplacedships(int amount)
