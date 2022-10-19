@@ -1,32 +1,43 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-
+using UnityEngine.UI;
+//using UnityEngine.UIElements;
+using TMPro;
 public class createboard : MonoBehaviour
 {
+    public Material Yellow; 
     public Material white;
     public Material blue; 
     public GameObject boardpiece;
     private GameObject[,] p1board = new GameObject[10,10];
     private GameObject[,] p2board = new GameObject[10, 10];    // Start is called before the first frame update
-    public Button orientation;
+    public GameObject butorientation, but5spacebattleship, but4spacebattleship, but3spacebattleship, but3spacebattleship2, but2spacebattleship;
+    public GameObject f5spacer, f4spacer, f3spacer1, f3spacer2, f2spacer; 
     bool verticle = true;
-    int shipspace = 5; 
-    
+    int shipspace = -1;
+    int shipselected = -1; 
     void Start()
     {
         //int row = 1; 
-       // int col = 1;
-//
-      // GameObject ob = GameObject.Instantiate(boardpiece);
-      // p1board[row, col] = GameObject.Instantiate(boardpiece);
-      // p1board[row, col].transform.position = new Vector3(col, boardpiece.transform.position.y, row);
-       
-       createboards(boardpiece);
+        // int col = 1;
+        //
+        // GameObject ob = GameObject.Instantiate(boardpiece);
+        // p1board[row, col] = GameObject.Instantiate(boardpiece);
+        // p1board[row, col].transform.position = new Vector3(col, boardpiece.transform.position.y, row);
+
+        butorientation.GetComponent<Button>().onClick.AddListener(orientationchage);
+        but5spacebattleship.GetComponent<Button>().onClick.AddListener(set5spacebattleship);
+        but4spacebattleship.GetComponent<Button>().onClick.AddListener(set4spacebattleship);
+        but3spacebattleship.GetComponent<Button>().onClick.AddListener(set3spacebattleship);
+        but3spacebattleship2.GetComponent<Button>().onClick.AddListener(set3spacesub);
+        but2spacebattleship.GetComponent<Button>().onClick.AddListener(set2spacebattleship);
+
+
+
+        createboards(boardpiece);
         
     }
 
@@ -73,7 +84,10 @@ public class createboard : MonoBehaviour
                 {
                     cleanboard();
                     p1board[row, col].transform.GetComponent<Renderer>().material = blue;
+
+                    if(shipspace!=-1)
                     preshowship(row, col);
+
                 }
             }
 
@@ -101,8 +115,14 @@ public class createboard : MonoBehaviour
         }
         else
         {
-            
-        
+            if (col + shipspace <= 10)
+            {
+                for (int count = col; count < (col + shipspace); count++)
+                {
+                    p1board[row, count].transform.GetChild(1).GetComponent<MeshRenderer>().enabled = true;
+                }
+            }
+
         }
 
 
@@ -177,11 +197,44 @@ public class createboard : MonoBehaviour
 
 
     }
-      
+
+    public void orientationchage()
+    {
+        Debug.Log("orientation change");
+        if (verticle == true)
+            verticle = false;
+        else
+            verticle = true;
     
+    }
 
+    public void set5spacebattleship()
+    {
+        shipselected = 5;
+        shipspace = 5;
+    }
+    public void set4spacebattleship()
+    {
+        shipselected = 4;
+        shipspace = 4;
+    }
+    public void set3spacebattleship()
+    {
+        shipselected = 3;
+        shipspace = 3;
+    }
+    public void set3spacesub()
+    {
+        shipselected = 2;
+        shipspace = 3;
+    }
+    public void set2spacebattleship()
+    {
+        shipselected = 1;
+        shipspace = 2;
+    }
 
- }
+}
 
 
       
