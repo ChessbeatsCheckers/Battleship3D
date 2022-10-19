@@ -7,6 +7,7 @@ using UnityEngine.UI;
 //using UnityEngine.UIElements;
 using TMPro;
 using Unity.Android.Types;
+using Random = UnityEngine.Random;
 
 public class createboard : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class createboard : MonoBehaviour
     public GameObject boardpiece;
     private GameObject[,] p1board = new GameObject[10,10];
     private GameObject[,] p2board = new GameObject[10, 10];    // Start is called before the first frame update
+    private int[,] AiShipsplaced = new int[10, 10];
     public GameObject butorientation, but5spacebattleship, but4spacebattleship, but3spacebattleship, but3spacebattleship2, but2spacebattleship;
     public GameObject f5spacer, f4spacer, f3spacer1, f3spacer2, f2spacer; 
     bool verticle = true;
@@ -62,7 +64,7 @@ public class createboard : MonoBehaviour
             if(hitinfo.transform.GetComponent<Renderer>().material.color != Color.green)
             hitinfo.transform.GetComponent<Renderer>().material = blue;
 
-            Debug.Log(hitinfo.transform.name);
+           // Debug.Log(hitinfo.transform.name);
             GetGameObjectandmakeotherswhite(hitinfo.transform.name, hitinfo.transform);
         }
     
@@ -286,18 +288,19 @@ public class createboard : MonoBehaviour
 
                 // Debug.Log("test");
                 p2board[row2, col2] = GameObject.Instantiate(boardpiece);
-                p2board[row2, col2].transform.position = new Vector3(col2, boardpiece.transform.position.y, row2);
+                p2board[row2, col2].transform.GetComponent<BoxCollider>().enabled = false;
+                p2board[row2, col2].transform.position = new Vector3(col2+13, boardpiece.transform.position.y, row2);
                 string name = "B2[" + col2 + ":" + row2 + "]";
                 p2board[row2, col2].transform.name = col2 + "A/" + row2;
                 p2board[row2, col2].transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = name;
             }
 
         }
+        AIplaceships();
 
+        boardpiece.transform.position = new Vector3(1000, 1000, 1000);
 
-
-
-         }
+       }
 
     char decideletter(int col)
     {
@@ -327,7 +330,7 @@ public class createboard : MonoBehaviour
 
     public void orientationchage()
     {
-        Debug.Log("orientation change");
+       // Debug.Log("orientation change");
         if (verticle == true)
         {
             rotatenonplacedships(90);
@@ -499,6 +502,136 @@ public class createboard : MonoBehaviour
         }
     }
 
+
+    //0 is smallest 
+    void AIplaceships()
+    {
+        int Aishipspace = -1;
+        for (int col = 0; col < 10; col++)
+        {
+            for (int row = 0; row < 10; row++)
+            {
+                AiShipsplaced[row, col] = 0;
+
+            }
+        }
+        // - 0 = water 
+        printarre(AiShipsplaced);
+
+        int count = 0;
+        while (count <5)
+        {
+
+            if (count == 0)
+                Aishipspace = 2;
+            if (count == 1)
+                Aishipspace = 3;
+            if (count == 2)
+                Aishipspace = 3;
+            if (count == 3)
+                Aishipspace = 4;
+            if (count == 4)
+                Aishipspace = 5;
+
+
+
+
+            int randomNumberrow = Random.Range(0, 10);
+            int randomNumberol = Random.Range(0, 10);
+            if (iscollisionAI(randomNumberrow, randomNumberol, Aishipspace) == false)
+            {
+                WriteAiShip(randomNumberrow, randomNumberol, Aishipspace);
+                printarre(AiShipsplaced);
+                count++;
+            }
+        }
+        
+        
+
+
+
+
+    }
+    void WriteAiShip(int row, int col, int Aishipspace)
+    {
+        if (verticle)
+        {
+            if (row + shipspace <= 10)
+            {
+                for (int count = row; count < (row + Aishipspace); count++)
+                {
+                    AiShipsplaced[count, col] = 1;
+                }
+            }
+
+        }
+        else
+        {
+            if (col + shipspace <= 10)
+            {
+                for (int count = col; count < (col + Aishipspace); count++)
+                {
+                    AiShipsplaced[row, count]=1;
+                }
+            }
+
+        }
+
+    }
+
+    bool iscollisionAI(int row, int col,int Aishipspace)
+    {
+        bool collision = false;
+        if (verticle)
+        {
+            if (row + Aishipspace <= 10)
+            {
+                for (int count = row; count < (row + Aishipspace); count++)
+                {
+                    if (AiShipsplaced[count, col] == 1)
+                    {
+                        //p1board[count, col].transform.GetChild(1).GetComponent<Renderer>().material = Yellow;
+                        collision = true;
+                    }
+                    
+                }
+            }
+            else
+                collision = true;
+
+            return collision;
+        }
+        else
+        {
+            if (col + Aishipspace <= 10)
+            {
+                for (int count = col; count < (col + Aishipspace); count++)
+                {
+                    if (AiShipsplaced[row, count] == 1)
+                    {
+                        //p1board[count, col].transform.GetChild(1).GetComponent<Renderer>().material = Yellow;
+                        collision = true;
+                    }
+                }
+            }
+            else
+                collision = true;
+
+            return collision;
+        }
+
+
+    }
+
+    void printarre(int[,] a)
+    {
+        Debug.Log(" Printing board------------------- ");
+        for (int col = 0; col < 10; col++)
+        {
+            
+            Debug.Log(AiShipsplaced[0, col]+" "+AiShipsplaced[1, col] + " "+ AiShipsplaced[2, col] + " "+ AiShipsplaced[3, col] + " "+ AiShipsplaced[4, col] + " "+ AiShipsplaced[5, col] + " "+ AiShipsplaced[6, col] + " "+ AiShipsplaced[7, col] + " "+ AiShipsplaced[8, col] + " "+AiShipsplaced[9, col] + " ");
+        }
+    }
 }
 
 
