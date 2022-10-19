@@ -517,7 +517,9 @@ public class createboard : MonoBehaviour
         }
         // - 0 = water 
         printarre(AiShipsplaced);
-
+        int randomNumberrow;
+        int randomNumberol;
+        bool trueorfalse; 
         int count = 0;
         while (count <5)
         {
@@ -536,11 +538,12 @@ public class createboard : MonoBehaviour
 
 
 
-            int randomNumberrow = Random.Range(0, 10);
-            int randomNumberol = Random.Range(0, 10);
-            if (iscollisionAI(randomNumberrow, randomNumberol, Aishipspace) == false)
+             randomNumberrow = Random.Range(0, 10);
+             randomNumberol = Random.Range(0, 10);
+            trueorfalse = randomBoolean();
+            if (iscollisionAI(randomNumberrow, randomNumberol, Aishipspace, trueorfalse) == false)
             {
-                WriteAiShip(randomNumberrow, randomNumberol, Aishipspace);
+                WriteAiShip(randomNumberrow, randomNumberol, Aishipspace, trueorfalse);
                 printarre(AiShipsplaced);
                 count++;
             }
@@ -552,9 +555,9 @@ public class createboard : MonoBehaviour
 
 
     }
-    void WriteAiShip(int row, int col, int Aishipspace)
+    void WriteAiShip(int row, int col, int Aishipspace, bool trueorfalse)
     {
-        if (verticle)
+        if (trueorfalse)
         {
             if (row + shipspace <= 10)
             {
@@ -579,10 +582,10 @@ public class createboard : MonoBehaviour
 
     }
 
-    bool iscollisionAI(int row, int col,int Aishipspace)
+    bool iscollisionAI(int row, int col,int Aishipspace , bool trueorfalse)
     {
         bool collision = false;
-        if (verticle)
+        if (trueorfalse)
         {
             if (row + Aishipspace <= 10)
             {
@@ -632,6 +635,16 @@ public class createboard : MonoBehaviour
             Debug.Log(AiShipsplaced[0, col]+" "+AiShipsplaced[1, col] + " "+ AiShipsplaced[2, col] + " "+ AiShipsplaced[3, col] + " "+ AiShipsplaced[4, col] + " "+ AiShipsplaced[5, col] + " "+ AiShipsplaced[6, col] + " "+ AiShipsplaced[7, col] + " "+ AiShipsplaced[8, col] + " "+AiShipsplaced[9, col] + " ");
         }
     }
+
+    bool randomBoolean()
+    {
+    if (Random.value >= 0.5)
+    {
+        return true;
+    }
+    return false;
+    }
+
 }
 
 
