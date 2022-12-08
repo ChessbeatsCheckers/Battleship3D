@@ -10,11 +10,13 @@ using Random = UnityEngine.Random;
 
 public class createboard : MonoBehaviour
 {
+    
     public Material Yellow; 
     public Material green; 
     public Material white;
     public Material blue; 
     public GameObject boardpiece;
+    private int phase2debounce = 1; 
     private GameObject[,] p1board = new GameObject[10,10];
     private GameObject[,] p2board = new GameObject[10, 10];    // Start is called before the first frame update
     private int[,] AiShipsplaced = new int[10, 10];
@@ -45,11 +47,28 @@ public class createboard : MonoBehaviour
         
     }
 
+    void phase2start()
+    {
+        Debug.Log("begin phase2");
+
+    }
+
     // Update is called once per frame
     void Update()
     {
-
+        if (phase2debounce == 1)
+        {
+            
+            if (areshipsplaced())
+            {
+                phase2debounce++;
+                
+                phase2start();
+    
+            }
+        }
         preshow();
+        
     }
 
     void exit()
@@ -647,8 +666,18 @@ public class createboard : MonoBehaviour
     return false;
     }
 
+    bool areshipsplaced()
+    {
+      // Debug.Log(but5spacebattleship.GetComponent<Button>().enabled);
+        if (but5spacebattleship.GetComponent<Button>().enabled == false && but4spacebattleship.GetComponent<Button>().enabled == false && but3spacebattleship.GetComponent<Button>().enabled == false && but3spacebattleship2.GetComponent<Button>().enabled == false && but2spacebattleship.GetComponent<Button>().enabled == false)
+            return true;
+        else
+            return false; 
+    }
+
+
 }
 
 
-      
+
 
