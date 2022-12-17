@@ -7,6 +7,7 @@ using UnityEngine.UI;
 //using UnityEngine.UIElements;
 using TMPro;
 using Random = UnityEngine.Random;
+using UnityEditor;
 
 public class createboard : MonoBehaviour
 {
@@ -24,9 +25,16 @@ public class createboard : MonoBehaviour
     public GameObject f5spacer, f4spacer, f3spacer1, f3spacer2, f2spacer; 
     bool verticle = true;
     int shipspace = -1;
-    int shipselected = -1; 
+    int shipselected = -1;
+    public GameObject gendataui;
+    public GameObject scoreui;
+    public GameObject turnui;
+    public GameObject campos;
+    public bool endgameactive = false;
+    endgame end;
+   
     void Start()
-    {
+    {   
         //int row = 1; 
         // int col = 1;
         //
@@ -46,35 +54,60 @@ public class createboard : MonoBehaviour
         createboards(boardpiece);
         
     }
-
+    
     void phase2start()
     {
+        endgameactive = true;
+        butorientation.active = false;
         Debug.Log("begin phase2");
-
+         end = new endgame(p1board, p2board, gendataui, scoreui, turnui,gameObject, campos, blue);
+        end.setmaterials(white);
+        end.setaishipsplaced(AiShipsplaced);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (phase2debounce == 1)
+
+        if (endgameactive == false)
         {
-            
-            if (areshipsplaced())
+            if (phase2debounce == 1)
             {
-                phase2debounce++;
-                
-                phase2start();
-    
+
+                if (areshipsplaced())
+                {
+                    phase2debounce++;
+
+                    phase2start();
+
+                }
             }
+            preshow();
         }
-        preshow();
-        
+        else/// endgame is active now
+        {
+            end.preshow();
+
+
+
+
+
+
+        }
+
+
+
     }
 
     void exit()
     { 
      Application.Quit();
     }
+
+
+
+
+
     void preshow()
     {
        // int mask = 1 << LayerMask.NameToLayer("ignore");
