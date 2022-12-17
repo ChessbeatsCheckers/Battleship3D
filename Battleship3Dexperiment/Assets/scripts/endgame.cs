@@ -105,32 +105,38 @@ public class endgame:MonoBehaviour
     }
     
     //-1 a hit spot, 0 water, -2 a hit ship 
-    int hitaiboard( int cordx, int cordy)
+    int hitboard( int cordx, int cordy, int [,] board, string boardname)
     {
-        for (int col = 0; col < 10; col++)
+
+        if (boardname == "ai")
         {
-
-            for (int row = 0; row < 10; row++)
+            if(AiShipsplaced[cordx, cordy] == 0 || AiShipsplaced[cordx, cordy] == 1)
             {
-                if (cordx == col && cordy == row)
-                {
                     if (AiShipsplaced[cordx, cordy] == 0)
-                    {
                         AiShipsplaced[cordx, cordy] = -1;
-                    }
-                }
 
+                    if (AiShipsplaced[cordx, cordy] == 1)
+                        AiShipsplaced[cordx, cordy] = -2;
             }
+            else
+            {
+             return 0;
+            }
+                return 1;
+        }///ai boardm hit ends
+        else 
+        { 
+        
         }
-                return 0;
-
-
     }
+
     void GetGameObjectandmakeotherswhite(string rowcol, Transform obj)
     {
+        int hitsuccess;
         int rowe = rowcol[0] - '0';
-        int cole = rowcol[2] - '0';
-
+        //change on turn
+        int cole = rowcol[3] - '0';
+       // Debug.Log("your trying to hit " + rowe + " and " + cole);
         for (int col = 0; col < 10; col++)
         {
 
@@ -147,12 +153,20 @@ public class endgame:MonoBehaviour
                     cleanboard();
                     if (enemynpcboard[row, col].transform.GetComponent<Renderer>().material.color != Color.green)
                         enemynpcboard[row, col].transform.GetComponent<Renderer>().material = blue;
-
+                    paintaiboard();
                     if (Input.GetMouseButtonUp(0))
                     {
-                        hitaiboard(rowe, cole);
-                        // shooting missle
+                        hitsuccess = hitaiboard(rowe, cole);
+                        if (hitsuccess == 1)
+                        { 
+                         // next turn
+                        }
+                        { 
+                          //error message
+                        }
 
+                        // shooting missle
+                        printarre(AiShipsplaced);
                     }
                 }
             }
@@ -172,7 +186,10 @@ public class endgame:MonoBehaviour
         {
             for (int row2 = 0; row2 < 10; row2++)
             {
-                enemynpcboard[row2, col2].transform.GetComponent<BoxCollider>().enabled = true;
+                if (AiShipsplaced[col2, row2] == -1 || AiShipsplaced[col2, row2] == -2) {
+                    enemynpcboard[row2, col2].transform.GetComponent<Renderer>().material.color = Color.red;
+                }
+               // enemynpcboard[row2, col2].transform.GetComponent<BoxCollider>().enabled = true;
             }
         }
     }
@@ -209,6 +226,14 @@ public class endgame:MonoBehaviour
 
     }
 
+    void printarre(int[,] a)
+    {
+        Debug.Log(" Printing board------------------- ");
+        for (int col = 0; col < 10; col++)
+        {
 
+            Debug.Log(AiShipsplaced[0, col] + " " + AiShipsplaced[1, col] + " " + AiShipsplaced[2, col] + " " + AiShipsplaced[3, col] + " " + AiShipsplaced[4, col] + " " + AiShipsplaced[5, col] + " " + AiShipsplaced[6, col] + " " + AiShipsplaced[7, col] + " " + AiShipsplaced[8, col] + " " + AiShipsplaced[9, col] + " ");
+        }
+    }
 
 }
