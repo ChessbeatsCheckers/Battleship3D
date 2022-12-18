@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using TMPro;
 using Random = UnityEngine.Random;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class createboard : MonoBehaviour
 {
@@ -120,6 +121,10 @@ public class createboard : MonoBehaviour
         enuigeneral.SetActive(true);
         enplrnametxt.GetComponent<TextMeshProUGUI>().text= winner;
         gameObject.transform.position = endzonecam.transform.position;
+        enexitbutton.GetComponent<Button>().onClick.AddListener(() => {
+
+            SceneManager.LoadScene(0);
+        });
     }
 
 
