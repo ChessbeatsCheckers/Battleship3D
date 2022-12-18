@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -12,8 +13,11 @@ using Random = UnityEngine.Random;
 
 public class endgame:MonoBehaviour
 {
+    private bool endgames = false;
    private bool debounce= false; 
     public int count = 0;
+    private int plr1points= 0;
+    private int aipoints = 0;
     private int turnsim=0;
     public GameObject Gendata;
     public GameObject score;
@@ -77,18 +81,23 @@ public class endgame:MonoBehaviour
 
     public void preshow()
     {
-        // int mask = 1 << LayerMask.NameToLayer("ignore");
-        RaycastHit hitinfo = new RaycastHit();
-        bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo);
-        if (hit)
+
+
+
+        if (endgames == false)
         {
-            if (hitinfo.transform.GetComponent<Renderer>().material.color != Color.red)
-                hitinfo.transform.GetComponent<Renderer>().material = blue ;
+            // int mask = 1 << LayerMask.NameToLayer("ignore");
+            RaycastHit hitinfo = new RaycastHit();
+            bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo);
+            if (hit)
+            {
+                if (hitinfo.transform.GetComponent<Renderer>().material.color != Color.red)
+                    hitinfo.transform.GetComponent<Renderer>().material = blue;
 
-            // Debug.Log(hitinfo.transform.name);
-            GetGameObjectandmakeotherswhite(hitinfo.transform.name, hitinfo.transform);
+                // Debug.Log(hitinfo.transform.name);
+                GetGameObjectandmakeotherswhite(hitinfo.transform.name, hitinfo.transform);
+            }
         }
-
     }
     
     void cleanboard()
@@ -194,6 +203,7 @@ public class endgame:MonoBehaviour
                             if (hitsuccess == 1)
                             {
                                 camera.transform.position = cameraogposition.position;
+                                
                                 success = true; 
                                 
 
@@ -205,38 +215,45 @@ public class endgame:MonoBehaviour
                                 if (hitsuccess == 0)
                                     Debug.Log("you hit that allready try again on plrboard");
                                 Debug.Log("ALERT HITBOARD SHOT AND RETURNED -------------------- "+hitsuccess);
+
+                                
                                 //error message
                             }
                         }
                         //// AI HITTING PLAYER ABOVE AND PLAYER HITTING AI BELOW-----------------------------
                         if (Input.GetMouseButtonUp(0))
                         {
-                            if (OddOrEven(turnsim))
+                            if (endgames == false)
                             {
-                                hitsuccess = hitboard(rowe, cole, "ai");
-
-
-
-
-                                if (hitsuccess == 1)
+                                if (OddOrEven(turnsim))
                                 {
-                                    success = true;
-                                    camera.transform.position = cameraogposition.position;
-                                    
+                                    hitsuccess = hitboard(rowe, cole, "ai");
 
-                                    // next turn
-                                }
-                                {
-                                    if (hitsuccess == -100)
-                                        Debug.Log("not doing anything");
-                                    if (hitsuccess == 0)
-                                        Debug.Log("you hit that allready try again on plrboard");
-                                    //error message
-                                    Debug.Log("ALERT HITBOARD SHOT AND RETURNED -------------------- " + hitsuccess);
-                                }
 
-                                // shooting missle
-                                printarre(plrshipsplaced);
+
+
+                                    if (hitsuccess == 1)
+                                    {
+
+                                        success = true;
+
+                                        camera.transform.position = cameraogposition.position;
+
+
+                                        // next turn
+                                    }
+                                    {
+                                        if (hitsuccess == -100)
+                                            Debug.Log("not doing anything");
+                                        if (hitsuccess == 0)
+                                            Debug.Log("you hit that allready try again on plrboard");
+                                        //error message
+                                        Debug.Log("ALERT HITBOARD SHOT AND RETURNED -------------------- " + hitsuccess);
+                                    }
+
+                                    // shooting missle
+                                    printarre(plrshipsplaced);
+                                }
                             }
                         }
 
@@ -248,8 +265,14 @@ public class endgame:MonoBehaviour
 
             }
 
-            if(success)
-             turnsim++;
+            if (success)
+            {
+                
+
+
+                turnsim++;
+
+            }
 
             debounce = false;
         }
@@ -425,4 +448,52 @@ public class endgame:MonoBehaviour
         }
 
     }
+
+    public string getendzone()
+    {
+
+        calcpoints();
+
+        if (plr1points == 17)
+        {
+            endgames = true;
+            return "plr";
+        }
+
+        if (aipoints == 17)
+        {
+            endgames = true;
+            return "ai";
+        }
+        
+        return "";
+     
+    }
+
+    private void calcpoints()
+    {
+        int aipoints = 0;
+        int plr1points = 0;
+
+       
+
+        for (int i = 0; i < 10; i++)
+        {
+            for (int a = 0; a < 10; a++)
+            {
+                if (plrshipsplaced[a, i] == -2)
+                    aipoints++;
+
+                if (AiShipsplaced[a,i]==-2)
+                    plr1points++;
+
+            }
+        }
+
+        this.plr1points = plr1points;
+        this.aipoints = aipoints;
+        score.GetComponent<TextMeshProUGUI>().text = aipoints.ToString() + " / " + plr1points.ToString();
+    }
+
+
 }

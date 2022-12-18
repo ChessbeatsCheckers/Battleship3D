@@ -11,7 +11,7 @@ using UnityEditor;
 
 public class createboard : MonoBehaviour
 {
-    
+    private string endtime =""; 
     public Material Yellow; 
     public Material green; 
     public Material white;
@@ -30,7 +30,14 @@ public class createboard : MonoBehaviour
     public GameObject scoreui;
     public GameObject turnui;
     public GameObject campos;
+    public GameObject endzonecam;
     public bool endgameactive = false;
+
+    // enduistuff below
+    public GameObject enuigeneral;
+    public GameObject enplrnametxt;
+    public GameObject enexitbutton; 
+
     endgame end;
    
     void Start()
@@ -88,7 +95,14 @@ public class createboard : MonoBehaviour
         {
             end.preshow();
 
+            endtime = end.getendzone();
 
+            if (endtime != "")
+            {
+                prepaireendgui(endtime);
+
+
+            }
 
 
 
@@ -98,6 +112,17 @@ public class createboard : MonoBehaviour
 
 
     }
+
+
+    void prepaireendgui(string winner)
+    {
+
+        enuigeneral.SetActive(true);
+        enplrnametxt.GetComponent<TextMeshProUGUI>().text= winner;
+        gameObject.transform.position = endzonecam.transform.position;
+    }
+
+
 
     void exit()
     { 
