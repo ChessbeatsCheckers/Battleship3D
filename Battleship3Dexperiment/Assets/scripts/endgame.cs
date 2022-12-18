@@ -286,22 +286,30 @@ public class endgame:MonoBehaviour
             for (int row2 = 0; row2 < 10; row2++)
             {
                 if (AiShipsplaced[col2, row2] == -1 || AiShipsplaced[col2, row2] == -2) {
-                    if(AiShipsplaced[col2, row2] == -1 )
-                    enemynpcboard[row2, col2].transform.GetComponent<Renderer>().material.color = Color.grey;
-
+                    if (AiShipsplaced[col2, row2] == -1)
+                    {
+                        enemynpcboard[row2, col2].transform.GetComponent<Renderer>().material.color = Color.grey;
+                        enemynpcboard[row2, col2].transform.GetChild(3).gameObject.SetActive(true);
+                    }
                     if (AiShipsplaced[col2, row2] == -2)
+                    {
                         enemynpcboard[row2, col2].transform.GetComponent<Renderer>().material.color = Color.red;
-
+                        enemynpcboard[row2, col2].transform.GetChild(2).gameObject.SetActive(true);
+                    }
                 }
 
                 if (plrshipsplaced[col2, row2] == -1 || plrshipsplaced[col2, row2] == -2)
                 {
                     if (plrshipsplaced[col2, row2] == -1)
+                    {
                         p1board[row2, col2].transform.GetComponent<Renderer>().material.color = Color.grey;
-
+                        p1board[row2, col2].transform.GetChild(3).gameObject.SetActive(true);
+                    }
                     if (plrshipsplaced[col2, row2] == -2)
+                    {
                         p1board[row2, col2].transform.GetComponent<Renderer>().material.color = Color.red;
-
+                        p1board[row2, col2].transform.GetChild(2).gameObject.SetActive(true);
+                    }
                 }
 
 
