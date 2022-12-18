@@ -30,7 +30,11 @@ public class endgame:MonoBehaviour
     public int[,] plrshipsplaced = new int[10, 10];
     GameObject[,] p1board;
     GameObject[,] enemynpcboard;
-    Transform cameraogposition; 
+    Transform cameraogposition;
+
+    public AudioClip explosionsound;
+    public AudioClip splashsound;
+
     // Start is called before the first frame update
 
     public endgame(GameObject[,] p1board, GameObject[,] npcboard, GameObject Gendataui, GameObject scoreui, GameObject turnui, GameObject camera, GameObject campos, Material blue)
@@ -70,12 +74,7 @@ public class endgame:MonoBehaviour
         camera.transform.position = friendlycampos.transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        count++;
-        Debug.Log(count);
-    }
+
 
 
 
@@ -252,7 +251,7 @@ public class endgame:MonoBehaviour
                                     }
 
                                     // shooting missle
-                                    printarre(plrshipsplaced);
+                                   // printarre(plrshipsplaced);
                                 }
                             }
                         }
@@ -403,9 +402,9 @@ public class endgame:MonoBehaviour
             }
         }
 
-        Debug.Log("this is the plrs board-=-------------------------------------------------==============================s===================------------------================-----");
-        printarre(plrshipsplaced);
-        pringameobjarre(p1board);
+       // Debug.Log("this is the plrs board-=-------------------------------------------------==============================s===================------------------================-----");
+        //printarre(plrshipsplaced);
+       // pringameobjarre(p1board);
     }
 
     int [] getvalidcordinatesforai()

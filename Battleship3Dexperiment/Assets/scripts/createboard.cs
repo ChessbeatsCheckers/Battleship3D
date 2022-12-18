@@ -12,6 +12,8 @@ using UnityEngine.SceneManagement;
 
 public class createboard : MonoBehaviour
 {
+    public AudioClip explosionsound;
+    public AudioClip splashsound;
     private string endtime =""; 
     public Material Yellow; 
     public Material green; 
