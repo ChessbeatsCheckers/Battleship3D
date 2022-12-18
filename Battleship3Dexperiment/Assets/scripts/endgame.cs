@@ -1,16 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TerrainTools;
 using UnityEngine.UIElements;
-using Random = System.Random;
+using Random = UnityEngine.Random;
 
 public class endgame:MonoBehaviour
 {
-    private Random random = new Random();
+   private bool debounce= false; 
     public int count = 0;
     private int turnsim=0;
     public GameObject Gendata;
@@ -53,7 +55,7 @@ public class endgame:MonoBehaviour
         enableboard2();
         numericalizeplrarre();
 
-
+        //paintp1redtest();
 
     }
 
@@ -112,7 +114,7 @@ public class endgame:MonoBehaviour
     //-1 a hit spot, 0 water, -2 a hit ship 
     int hitboard( int cordx, int cordy, string boardname)
     {
-
+        Debug.Log("attempting to hit "+ cordx +" and  " + cordy);
         if (boardname == "ai")
         {
             if(AiShipsplaced[cordx, cordy] == 0 || AiShipsplaced[cordx, cordy] == 1)
@@ -122,100 +124,135 @@ public class endgame:MonoBehaviour
 
                     if (AiShipsplaced[cordx, cordy] == 1)
                         AiShipsplaced[cordx, cordy] = -2;
+
+                return 1;
             }
             else
             {
              return 0;
             }
-            return 1;
+            
         }///ai boardm hit ends
-        else 
+        else if(boardname=="plr") 
         {
-            return 1;
+            if (plrshipsplaced[cordx, cordy] == 0 || plrshipsplaced[cordx, cordy] == 1)
+            {
+                Debug.Log("WE ARE HITTING PLR 1 BOARD AND MARKING DOWN , T AT " + cordx + cordy + " and its name is " + p1board[cordx, cordy].transform.name);
+                if (plrshipsplaced[cordx, cordy] == 0)
+                    plrshipsplaced[cordx, cordy] = -1;
+
+                if (plrshipsplaced[cordx, cordy] == 1)
+                    plrshipsplaced[cordx, cordy] = -2;
+
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+            
         }
+        return -100; 
     }
 
     void GetGameObjectandmakeotherswhite(string rowcol, Transform obj)
-    {
-        int hitsuccess=-100;
-        int rowe = rowcol[0] - '0';
-        //change on turn
-        int cole = rowcol[3] - '0';
-       // Debug.Log("your trying to hit " + rowe + " and " + cole);
-        for (int col = 0; col < 10; col++)
+    { if (debounce == false)
         {
+            bool success = false; 
+            debounce = true;
+            int hitsuccess = -100;
+            int rowe = rowcol[0] - '0';
+            //change on turn
+            int cole = rowcol[3] - '0';
 
-            for (int row = 0; row < 10; row++)
+            int[] validcords;
+            // Debug.Log("your trying to hit " + rowe + " and " + cole);
+            for (int col = 0; col < 10; col++)
             {
-                if (enemynpcboard[row, col].transform != obj)
+
+                for (int row = 0; row < 10; row++)
                 {
-
-
-
-                }
-                else
-                {
-                    cleanboard();
-                    if (enemynpcboard[row, col].transform.GetComponent<Renderer>().material.color != Color.green)
-                        enemynpcboard[row, col].transform.GetComponent<Renderer>().material = blue;
-
-                    paintboards();
-
-                    if (!OddOrEven(turnsim))// if odd ai hits plrboard
+                    if (enemynpcboard[row, col].transform != obj)
                     {
-                        rowe= random.Next(1, 11);
-                        cole= random.Next(1, 11);
 
-                        hitsuccess = hitboard(rowe, cole, "plr");
-                        if (hitsuccess == 1)
-                        {
-                            camera.transform.position = cameraogposition.position;
-                            turnsim++;
 
-                            // next turn
-                        }
-                        {
 
-                            //error message
-                        }
                     }
-                    //// AI HITTING PLAYER ABOVE AND PLAYER HITTING AI BELOW-----------------------------
-                    if (Input.GetMouseButtonUp(0))
+                    else
                     {
-                        if (OddOrEven(turnsim))
+                        cleanboard();
+                        if (enemynpcboard[row, col].transform.GetComponent<Renderer>().material.color != Color.green)
+                            enemynpcboard[row, col].transform.GetComponent<Renderer>().material = blue;
+
+                        paintboards();
+
+                        if (!OddOrEven(turnsim))// if odd ai hits plrboard
                         {
-                            hitsuccess = hitboard(rowe, cole, "ai");
 
+                            validcords = getvalidcordinatesforai();
+                            hitsuccess = hitboard(validcords[0], validcords[1], "plr");
+                            if (hitsuccess == 1)
+                            {
+                                camera.transform.position = cameraogposition.position;
+                                success = true; 
+                                
+
+                                // next turn
+                            }
+                            {
+                                if(hitsuccess==-100)
+                                    Debug.Log("not doing anything");
+                                if (hitsuccess == 0)
+                                    Debug.Log("you hit that allready try again on plrboard");
+                                Debug.Log("ALERT HITBOARD SHOT AND RETURNED -------------------- "+hitsuccess);
+                                //error message
+                            }
                         }
-                        
-
-                        if (hitsuccess == 1)
+                        //// AI HITTING PLAYER ABOVE AND PLAYER HITTING AI BELOW-----------------------------
+                        if (Input.GetMouseButtonUp(0))
                         {
-                            camera.transform.position = cameraogposition.position;
-                            turnsim++;
-                            
-                         // next turn
-                        }
-                        { 
+                            if (OddOrEven(turnsim))
+                            {
+                                hitsuccess = hitboard(rowe, cole, "ai");
 
-                          //error message
+
+
+
+                                if (hitsuccess == 1)
+                                {
+                                    success = true;
+                                    camera.transform.position = cameraogposition.position;
+                                    
+
+                                    // next turn
+                                }
+                                {
+                                    if (hitsuccess == -100)
+                                        Debug.Log("not doing anything");
+                                    if (hitsuccess == 0)
+                                        Debug.Log("you hit that allready try again on plrboard");
+                                    //error message
+                                    Debug.Log("ALERT HITBOARD SHOT AND RETURNED -------------------- " + hitsuccess);
+                                }
+
+                                // shooting missle
+                                printarre(plrshipsplaced);
+                            }
                         }
 
-                        // shooting missle
-                        printarre(AiShipsplaced);
+
+
                     }
-
-
-
                 }
+
+
             }
 
+            if(success)
+             turnsim++;
 
+            debounce = false;
         }
-
-
-
-
 
     }
 
@@ -291,10 +328,25 @@ public class endgame:MonoBehaviour
             Debug.Log(a[0, col] + " " + a[1, col] + " " + a[2, col] + " " + a[3, col] + " " + a[4, col] + " " + a[5, col] + " " + a[6, col] + " " + a[7, col] + " " + a[8, col] + " " + a[9, col] + " ");
         }
     }
-      bool OddOrEven(int num)
+
+
+    void pringameobjarre(GameObject[,] a)
     {
-        return num % 2 == 0;
+        Debug.Log(" Printing board------------------- ");
+        for (int col = 0; col < 10; col++)
+        {
+
+            for (int row2 = 0; row2 < 10; row2++)
+            {
+                Debug.Log(a[col, row2].transform.name);
+            }
+        }
     }
+
+    bool OddOrEven(int num)
+      {
+        return num % 2 == 0;
+      }
 
 
 
@@ -307,16 +359,70 @@ public class endgame:MonoBehaviour
         {
             for (int row2 = 0; row2 < 10; row2++)
             {
-                if (p1board[col2, row2].GetComponent<Renderer>().material.color == Color.green)
+                if (p1board[row2, col2].GetComponent<Renderer>().material.color == Color.green)
+                {
                     plrshipsplaced[col2, row2] = 1;
+                    Debug.Log("this name has a ship part on it" + col2 + " n " + row2 + " and name is " + p1board[row2, col2].transform.name);
+                }
                 else
+                {
+                    Debug.Log("this name has a water part on it" + col2 + " n " + row2 + " and name is " + p1board[row2, col2].transform.name);
                     plrshipsplaced[col2, row2] = 0;
-
+                }
             }
         }
 
-        Debug.Log("this is the plrs board-=-------------------------------------------------=================================================------------------================-----");
+        Debug.Log("this is the plrs board-=-------------------------------------------------==============================s===================------------------================-----");
         printarre(plrshipsplaced);
+        pringameobjarre(p1board);
     }
 
+    int [] getvalidcordinatesforai()
+    {
+        bool  validatadatafound = false;
+        int rowe = Random.Range(0, 10);
+        int cole = Random.Range(0, 10);
+        int[] validcords = new int[2];
+        Debug.Log("attempting ai valid");
+        while (validatadatafound == false)
+        {
+            Debug.Log("workin===================================================================================================================");
+            
+                    rowe = Random.Range(0, 10);
+                    cole = Random.Range(0, 10);
+                    if (plrshipsplaced[rowe, cole] == 0|| plrshipsplaced[rowe, cole] ==1 )
+                    {
+                        validatadatafound = true;
+                        validcords[0] = rowe;
+                        validcords[1] = cole;
+                    }
+             
+        }
+        Debug.Log("FINISHED=============================================================================================================================================");
+        Debug.Log("Our valid cordinate is "+ validcords[0]+ " " +validcords[1]+" with the name of "+ p1board[rowe, cole].transform.name);
+        if (plrshipsplaced[rowe, cole] == 1)
+            Debug.Log("IT DOES HAVE A SHIP ON IT");
+        else
+            Debug.Log("IT IS WATER");
+
+        return validcords;
+    }
+
+
+    void paintp1redtest()
+    {
+
+        for (int i = 0; 1 < 10; i++)
+        {
+            for (int b = 0; b < 10; b++)
+            {
+                //if (p1board[b, i].GetComponent<Renderer>().material.color == Color.green)
+                if (plrshipsplaced[b,i]==1)
+                {
+                    p1board[b, i].GetComponent<Renderer>().material.color = Color.red;
+                }
+            }
+        }
+
+    }
 }
