@@ -85,18 +85,25 @@ public class endgame:MonoBehaviour
 
         if (endgames == false)
         {
-            // int mask = 1 << LayerMask.NameToLayer("ignore");
-            RaycastHit hitinfo = new RaycastHit();
-            bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo);
-            if (hit)
-            {
-                if (hitinfo.transform.GetComponent<Renderer>().material.color != Color.red)
-                    hitinfo.transform.GetComponent<Renderer>().material = blue;
+            
+                // int mask = 1 << LayerMask.NameToLayer("ignore");
+                RaycastHit hitinfo = new RaycastHit();
+                bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo);
+                if (hit)
+                {
+                    if (debounce == false)
+                    {
+                        debounce = true;
+                        if (hitinfo.transform.GetComponent<Renderer>().material.color != Color.red)
+                            hitinfo.transform.GetComponent<Renderer>().material = blue;
 
-                // Debug.Log(hitinfo.transform.name);
-                GetGameObjectandmakeotherswhite(hitinfo.transform.name, hitinfo.transform);
-            }
+                        // Debug.Log(hitinfo.transform.name);
+                        GetGameObjectandmakeotherswhite(hitinfo.transform.name, hitinfo.transform);
+                    }
+                }
+            
         }
+        
     }
     
     void cleanboard()
@@ -164,10 +171,9 @@ public class endgame:MonoBehaviour
     }
 
     void GetGameObjectandmakeotherswhite(string rowcol, Transform obj)
-    { if (debounce == false)
-        {
+    { 
             bool success = false; 
-            debounce = true;
+            //debounce = true;
             int hitsuccess = -100;
             int rowe = rowcol[0] - '0';
             //change on turn
@@ -274,7 +280,7 @@ public class endgame:MonoBehaviour
             }
 
             debounce = false;
-        }
+        
 
     }
 
@@ -502,5 +508,30 @@ public class endgame:MonoBehaviour
         score.GetComponent<TextMeshProUGUI>().text = aipoints.ToString() + " / " + plr1points.ToString();
     }
 
+    private IEnumerator scale(GameObject toeffect, Vector3 dista, Vector3 distb, Quaternion rota, Quaternion rotb)
+    {
+        float time = 1f;
+        float speed = 2f;
+        float i = 0.0f;
+        float rate = (1.0f / time) * speed;
+        Quaternion holdr = new Quaternion();
+        holdr.x = 0;
+        holdr.y = rotb.y;
+        holdr.z = 0;
+        holdr.w = rotb.w;
 
+        // Debug.Log("scaleing upaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa loop");
+        while (i < 1.0f)
+        {
+            // Debug.Log("scaleing down in loop");
+            i += Time.deltaTime * rate;
+            // toeffect.transform.localScale = Vector3.Lerp(scalea, scaleb, i);
+            toeffect.transform.localPosition = Vector3.Lerp(dista, distb, i);
+            toeffect.transform.localRotation = Quaternion.Lerp(rota, holdr, i);
+            yield return null;
+        }
+
+
+
+    }
 }
