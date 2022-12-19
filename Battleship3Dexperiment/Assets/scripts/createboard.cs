@@ -9,9 +9,14 @@ using TMPro;
 using Random = UnityEngine.Random;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
 
 public class createboard : MonoBehaviour
 {
+    private int switcher = 0;
+    public GameObject viewotherboardui;
     public AudioClip explosionsound;
     public AudioClip splashsound;
     private string endtime =""; 
@@ -40,7 +45,7 @@ public class createboard : MonoBehaviour
     public GameObject enuigeneral;
     public GameObject enplrnametxt;
     public GameObject enexitbutton; 
-
+    public Vector3 ogcamposition;
     endgame end;
    
     void Start()
@@ -59,8 +64,23 @@ public class createboard : MonoBehaviour
         but3spacebattleship2.GetComponent<Button>().onClick.AddListener(set3spacesub);
         but2spacebattleship.GetComponent<Button>().onClick.AddListener(set2spacebattleship);
         butexit.GetComponent<Button>().onClick.AddListener(exit);
+        ogcamposition = gameObject.transform.position;
+        viewotherboardui.GetComponent<Button>().onClick.AddListener(() => {
+            ///add cam pos here
+            ///
 
+            Debug.Log("moving camera");
+            if (OddOrEven(switcher))
+            {
+                gameObject.transform.position = ogcamposition;
+                switcher++;
+            }
+            else {
+                gameObject.transform.position = campos.transform.position;
+                switcher++;
+            }
 
+        });
         createboards(boardpiece);
         
     }
@@ -70,9 +90,12 @@ public class createboard : MonoBehaviour
         endgameactive = true;
         butorientation.active = false;
         Debug.Log("begin phase2");
-         end = new endgame(p1board, p2board, gendataui, scoreui, turnui,gameObject, campos, blue);
+        viewotherboardui.SetActive(true);
+        
+        end = new endgame(p1board, p2board, gendataui, scoreui, turnui,gameObject, campos, blue);
         end.setmaterials(white);
         end.setaishipsplaced(AiShipsplaced);
+       
     }
 
     // Update is called once per frame
@@ -740,7 +763,10 @@ public class createboard : MonoBehaviour
             return false; 
     }
 
-
+    bool OddOrEven(int num)
+    {
+        return num % 2 == 0;
+    }
 }
 
 
