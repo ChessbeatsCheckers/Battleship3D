@@ -185,8 +185,9 @@ public class createboard : MonoBehaviour
 
 
     void exit()
-    { 
-     Application.Quit();
+    {
+        SceneManager.LoadScene(0);
+        
     }
 
 
