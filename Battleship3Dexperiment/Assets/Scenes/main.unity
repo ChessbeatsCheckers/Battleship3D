@@ -5914,103 +5914,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505680749}
   m_CullTransparentMesh: 1
---- !u!1001 &563589326
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 115386, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_Name
-      value: missile
-      objectReference: {fileID: 0}
-    - target: {fileID: 414870, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.105973184
-      objectReference: {fileID: 0}
-    - target: {fileID: 414870, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.11011757
-      objectReference: {fileID: 0}
-    - target: {fileID: 414870, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5523
-      objectReference: {fileID: 0}
-    - target: {fileID: 414870, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -10.12
-      objectReference: {fileID: 0}
-    - target: {fileID: 414870, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 12.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 414870, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -636
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -169.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.68563735
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.6856375
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.17292008
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.17292011
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 416014, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19895966, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: InitialModule.size3D
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19895966, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19895966, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19895966, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1d37014fd411c524db3696bba6ff1d21, type: 3}
 --- !u!1001 &600114826
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6925,7 +6828,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 2d1b9d0cd97326440b5c7859b991cbef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7291,11 +7194,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewotherboardui: {fileID: 241340692}
+  winnerwinnersong: {fileID: 8300000, guid: b3fe7d67054ebe1439554c9bb6c0e807, type: 3}
+  loserlosersong: {fileID: 8300000, guid: cf5a8289804650f47942d742e2a24311, type: 3}
   explosionsound: {fileID: 8300000, guid: 5b60914838bab69429d21741a4843455, type: 3}
   splashsound: {fileID: 8300000, guid: c08f242d304dc6741a3464ba23d6085a, type: 3}
   Yellow: {fileID: 2100000, guid: 79b7f54ea7a7b014490b01942b6b9cc6, type: 2}
   green: {fileID: 2100000, guid: 3c89860e507482b45bb79f8525ff68aa, type: 2}
-  white: {fileID: 2100000, guid: 7d0f95f0dd3687c438b0cbb46f95b7ac, type: 2}
+  white: {fileID: 2100000, guid: 2d1b9d0cd97326440b5c7859b991cbef, type: 2}
   blue: {fileID: 2100000, guid: 0d2c5df759d91cf4ca26b60179072ec0, type: 2}
   boardpiece: {fileID: 908162672}
   butorientation: {fileID: 949329266}
@@ -7939,7 +7844,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1400569133
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7949,7 +7854,7 @@ RectTransform:
   m_GameObject: {fileID: 1400569132}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7169, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1183139658}
@@ -8007,10 +7912,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 57.15
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

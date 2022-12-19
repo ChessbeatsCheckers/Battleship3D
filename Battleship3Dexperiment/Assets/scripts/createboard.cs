@@ -17,6 +17,10 @@ public class createboard : MonoBehaviour
 {
     private int switcher = 0;
     public GameObject viewotherboardui;
+
+    public AudioClip winnerwinnersong;
+    public AudioClip loserlosersong; 
+
     public AudioClip explosionsound;
     public AudioClip splashsound;
     private string endtime =""; 
@@ -46,6 +50,8 @@ public class createboard : MonoBehaviour
     public GameObject enplrnametxt;
     public GameObject enexitbutton; 
     public Vector3 ogcamposition;
+    public bool endgamedebounce = false;
+    bool finalloadcenedebounce = false; 
     endgame end;
    
     void Start()
@@ -147,9 +153,32 @@ public class createboard : MonoBehaviour
         enuigeneral.SetActive(true);
         enplrnametxt.GetComponent<TextMeshProUGUI>().text= winner;
         gameObject.transform.position = endzonecam.transform.position;
-        enexitbutton.GetComponent<Button>().onClick.AddListener(() => {
+        if (endgamedebounce == false)
+        {
+            endgamedebounce = true; 
+            if (winner == "ai")
+            {
+                AudioSource a = gameObject.AddComponent<AudioSource>();
+                a.clip = loserlosersong;
+                a.loop = true;
+                a.Play();
 
-            SceneManager.LoadScene(0);
+
+            }
+            if (winner == "plr")
+            {
+                AudioSource a = gameObject.AddComponent<AudioSource>();
+                a.clip = winnerwinnersong;
+                a.loop = true;
+                a.Play();
+            }
+        }
+        enexitbutton.GetComponent<Button>().onClick.AddListener(() => {
+            if (finalloadcenedebounce == false)
+            {
+                finalloadcenedebounce=true;
+                SceneManager.LoadScene(0);
+            }
         });
     }
 
