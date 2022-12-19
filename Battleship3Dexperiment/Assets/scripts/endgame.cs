@@ -34,7 +34,7 @@ public class endgame:MonoBehaviour
 
     public AudioClip explosionsound;
     public AudioClip splashsound;
-
+    public GameObject testaudioplr; 
     // Start is called before the first frame update
 
     public endgame(GameObject[,] p1board, GameObject[,] npcboard, GameObject Gendataui, GameObject scoreui, GameObject turnui, GameObject camera, GameObject campos, Material blue)
@@ -127,11 +127,19 @@ public class endgame:MonoBehaviour
         {
             if(AiShipsplaced[cordx, cordy] == 0 || AiShipsplaced[cordx, cordy] == 1)
             {
-                    if (AiShipsplaced[cordx, cordy] == 0)
-                        AiShipsplaced[cordx, cordy] = -1;
+                if (AiShipsplaced[cordx, cordy] == 0)
+                {
+                    testaudioplr.GetComponent<AudioSource>().clip = splashsound;
+                    testaudioplr.GetComponent<AudioSource>().Play();
+                    AiShipsplaced[cordx, cordy] = -1;
+                }
 
-                    if (AiShipsplaced[cordx, cordy] == 1)
-                        AiShipsplaced[cordx, cordy] = -2;
+                if (AiShipsplaced[cordx, cordy] == 1)
+                {
+                    testaudioplr.GetComponent<AudioSource>().clip = explosionsound;
+                    testaudioplr.GetComponent<AudioSource>().Play();
+                    AiShipsplaced[cordx, cordy] = -2;
+                }
 
                 return 1;
             }
@@ -147,11 +155,18 @@ public class endgame:MonoBehaviour
             {
                 Debug.Log("WE ARE HITTING PLR 1 BOARD AND MARKING DOWN , T AT " + cordx + cordy + " and its name is " + p1board[cordx, cordy].transform.name);
                 if (plrshipsplaced[cordx, cordy] == 0)
+                {
+                    //testaudioplr.GetComponent<AudioSource>().clip = splashsound;
+                    //testaudioplr.GetComponent<AudioSource>().Play();
                     plrshipsplaced[cordx, cordy] = -1;
+                }
 
                 if (plrshipsplaced[cordx, cordy] == 1)
+                {
+                   // testaudioplr.GetComponent<AudioSource>().clip = explosionsound;
+                    //testaudioplr.GetComponent<AudioSource>().Play();
                     plrshipsplaced[cordx, cordy] = -2;
-
+                }
                 return 1;
             }
             else
@@ -502,5 +517,11 @@ public class endgame:MonoBehaviour
         score.GetComponent<TextMeshProUGUI>().text = aipoints.ToString() + " / " + plr1points.ToString();
     }
 
+    public void setaudioplr(GameObject testaudioplr, AudioClip explosionsound, AudioClip watersplash)
+    {
 
+        this.testaudioplr = testaudioplr; 
+        this.explosionsound = explosionsound;
+        this.splashsound = watersplash; 
+    }
 }

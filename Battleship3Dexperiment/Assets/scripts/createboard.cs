@@ -72,11 +72,12 @@ public class createboard : MonoBehaviour
             Debug.Log("moving camera");
             if (OddOrEven(switcher))
             {
-                gameObject.transform.position = ogcamposition;
+                gameObject.transform.position = campos.transform.position;
                 switcher++;
             }
             else {
-                gameObject.transform.position = campos.transform.position;
+                
+                gameObject.transform.position = ogcamposition;
                 switcher++;
             }
 
@@ -95,7 +96,7 @@ public class createboard : MonoBehaviour
         end = new endgame(p1board, p2board, gendataui, scoreui, turnui,gameObject, campos, blue);
         end.setmaterials(white);
         end.setaishipsplaced(AiShipsplaced);
-       
+        end.setaudioplr(gameObject,explosionsound, splashsound);
     }
 
     // Update is called once per frame
@@ -110,7 +111,7 @@ public class createboard : MonoBehaviour
                 if (areshipsplaced())
                 {
                     phase2debounce++;
-
+                    switcher++;
                     phase2start();
 
                 }
